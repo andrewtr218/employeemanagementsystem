@@ -6,8 +6,7 @@ var cont=true
 var departments = [];
 var employees = [];
 var roles = [];
-var employeeRole [];
-var employeeObj = [{}];
+var employeeJSON = [];
 
 
 // create the connection information for the sql database
@@ -79,8 +78,12 @@ async function updateRole(employeeName){
         prompt: "select a role",
         choices: roles
     }])
-    employeeObj.name = employeeName;
-    employeeObj.role = Select;
+    let employeeFull = {};
+    employeeFull.name = employeeName;
+    employeeFull.role = Select;
+    employeeJSON.push(employeeFull);
+    console.log(employeeJSON);
+    question1();    
 }
 
 async function addAll(){
@@ -179,36 +182,37 @@ async function viewAll(){
 }
 
 async function viewDepartment(){
-    const { Select } = await inquirer.prompt([{
-        type: "list",
-        name: "Select",
-        prompt: "select an option",
-        choices: departments
-    }])
-    console.log(Select)
-    question1();
+        const { Select } = await inquirer.prompt([{
+            type: "list",
+            name: "Select",
+            prompt: "select an option",
+            choices: departments
+        }])
+        console.log(Select)
+        question1();
 }
 
 async function viewEmployee(){
-    const { Select } = await inquirer.prompt([{
-        type: "list",
-        name: "Select",
-        prompt: "select an option",
-        choices: employees
-    }])
-    console.log(Select)
-    question1();
-}
+        const { Select } = await inquirer.prompt([{
+            type: "list",
+            name: "Select",
+            prompt: "select an option",
+            choices: employees
+        }])
+        console.log(Select)
+        question1();
+};
 
 async function viewRole(){
-    const { Select } = await inquirer.prompt([{
-        type: "list",
-        name: "Select",
-        prompt: "select an option",
-        choices: roles
-    }])
-    console.log(Select)
-    question1();
+        const { Select } = await inquirer.prompt([{
+            type: "list",
+            name: "Select",
+            prompt: "select an option",
+            choices: roles
+        }])
+        console.log(Select)
+        question1();
+    
 }
 
 question1();
