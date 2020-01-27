@@ -3,9 +3,12 @@ var inquirer = require("inquirer");
 
 var cont=true
 
-var departments = [];
-var employees = [];
-var roles = [];
+var departments = [("Big Boss"),
+("Middle People"),
+("Small Worthless Scum"),
+("Slaves")];
+var employees = ["Clark", "Blart", "Cleag", "Borm"];
+var roles = ["Big Ones", "Middle", "Worker", "Slave"];
 var employeeJSON = [];
 
 
@@ -24,12 +27,12 @@ var connection = mysql.createConnection({
   database: "manage_db"
 });
 
-async function connection(){
+
 connection.connect(function(err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId + "\n");
-})
-};
+});
+
 
 async function question1(){
     const { Select } = await inquirer.prompt([{
@@ -78,6 +81,9 @@ async function updateRole(employeeName){
         prompt: "select a role",
         choices: roles
     }])
+    connection.query("Insert Into employees from ? set ?", {role: Select}, function(err,res){
+        console.log("Role Added!");
+    })
     let employeeFull = {};
     employeeFull.name = employeeName;
     employeeFull.role = Select;
@@ -110,7 +116,7 @@ async function addAll(){
             console.log(`Go Back`)
             question1();
             break;
-        case `quit`:
+        case `quit\n`:
             console.log(`Quitting`)
             process.exit(2);
             break;
@@ -124,7 +130,9 @@ async function addDepartment(){
         message: "What is the name of the department you want to add?",
     }])
     departments.push(Select);
-    console.log("Department Added!");
+    connection.query("Insert Into departments set ?", {department: Select}, function(err,res){
+        console.log("Department Added!");
+    })
     question1();
 }
 
@@ -135,7 +143,9 @@ async function addEmployee(){
         message: "What is the name of the employee you want to add?",
     }])
     employees.push(Select);
-    console.log("Employee Added!");
+    connection.query("Insert Into employees set ?", {full_name: Select}, function(err,res){
+        console.log("Employee Added!");
+    });
     question1();
 }
 
@@ -146,7 +156,9 @@ async function addRole(){
         message: "What is the name of the role you want to add?",
     }])
     roles.push(Select);
-    console.log("Role Added!");
+    connection.query("Insert Into roles set ?", {role: Select}, function(err,res){
+        console.log("Role Added!");
+    })
     question1();
 }
 
@@ -155,7 +167,7 @@ async function viewAll(){
         type: "list",
         name: "Select",
         prompt: "select an option",
-        choices: [`view a department`, `view an employee`, `view a role`, `go back`, `quit`]
+        choices: [`view a department`, `view an employee`, `view a role`, `go back`, `quit\n`]
     }])
     switch(Select){
         case `view a department`:
@@ -174,7 +186,7 @@ async function viewAll(){
             console.log(`Go Back`)
             addAll();
             break;
-        case `quit`:
+        case `quit\n`:
             console.log(`Quitting`)
             process.exit(2);
             break;
@@ -182,36 +194,27 @@ async function viewAll(){
 }
 
 async function viewDepartment(){
-        const { Select } = await inquirer.prompt([{
-            type: "list",
-            name: "Select",
-            prompt: "select an option",
-            choices: departments
-        }])
-        console.log(Select)
+    connection.query("Select * From departments", function(err, res) {
+        if (err) throw err;
+        console.table(res);
         question1();
+    })
 }
 
 async function viewEmployee(){
-        const { Select } = await inquirer.prompt([{
-            type: "list",
-            name: "Select",
-            prompt: "select an option",
-            choices: employees
-        }])
-        console.log(Select)
+    connection.query("Select * From employees", function(err, res) {
+        if (err) throw err;
+        console.table(res);
         question1();
+    })
 };
 
 async function viewRole(){
-        const { Select } = await inquirer.prompt([{
-            type: "list",
-            name: "Select",
-            prompt: "select an option",
-            choices: roles
-        }])
-        console.log(Select)
+    connection.query("Select * From roles", function(err, res) {
+        if (err) throw err;
+        console.table(res);
         question1();
+    })
     
 }
 
