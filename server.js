@@ -7,7 +7,7 @@ var departments = [("Big Boss"),
 ("Middle People"),
 ("Small Worthless Scum"),
 ("Slaves")];
-var employees = ["Clark", "Blart", "Cleag", "Borm"];
+var employees = ["Clark Sad", "Blart Trog", "Cleag Land", "Borm Barm"];
 var roles = ["Big Ones", "Middle", "Worker", "Slave"];
 var employeeJSON = [];
 
@@ -30,7 +30,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
   if (err) throw err;
-  console.log("connected as id " + connection.threadId + "\n");
+//   console.log("connected as id " + connection.threadId + "\n");
 });
 
 
@@ -81,14 +81,14 @@ async function updateRole(employeeName){
         prompt: "select a role",
         choices: roles
     }])
-    connection.query("Insert Into employees from ? set ?", {role: Select}, function(err,res){
+    connection.query("Update employees set ? where ?", [{role: Select},{full_name: employeeName}], function(err,res){
         console.log("Role Added!");
     })
     let employeeFull = {};
     employeeFull.name = employeeName;
     employeeFull.role = Select;
     employeeJSON.push(employeeFull);
-    console.log(employeeJSON);
+    // console.log(employeeJSON);
     question1();    
 }
 
@@ -101,15 +101,15 @@ async function addAll(){
     }])
     switch(Select){
         case `add a department`:
-            console.log(`Adding a Department`)
+            // console.log(`Adding a Department`)
             addDepartment();
             break;
         case `add an employee`:
-            console.log(`Adding an Employee`)
+            // console.log(`Adding an Employee`)
             addEmployee();
             break;
         case `add a role`:
-            console.log(`Adding a Role`)
+            // console.log(`Adding a Role`)
             addRole();
             break;
         case `go back`:

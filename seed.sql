@@ -11,7 +11,7 @@ values ("Worker", 400.82, 3),
 ("Big Ones", 20,000.43, 1);
 
 Insert Into employees(first_name, last_name, role_id, manager_id)
-values ("Clark", "Sad", 1, 1),
-("Blart", "Trog", 2, 2),
-("Cleag", "Land", 3, 3),
-("Borm", "Barm", 4, 4);
+values ("Clark Sad", 1, 1),
+("Blart Trog", 2, 2),
+("Cleag Land", 3, 3),
+("Borm Barm", 4, 4);
